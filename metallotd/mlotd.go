@@ -2,9 +2,10 @@ package mlotd
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/kkdai/youtube/v2"
 	"github.com/pkg/errors"
-	"os"
 )
 
 type MetalLinkOfTheDay struct {

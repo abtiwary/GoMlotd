@@ -2,11 +2,12 @@ package metaldb
 
 import (
 	"fmt"
+	"time"
+
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
 	log "github.com/sirupsen/logrus"
-	"time"
 )
 
 type MetalRecommendation struct {
