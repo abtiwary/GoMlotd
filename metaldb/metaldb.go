@@ -10,10 +10,10 @@ import (
 )
 
 type MetalRecommendation struct {
-	URL string `db:"url"`
-	VideoID string `db:"video_id"`
+	URL        string `db:"url"`
+	VideoID    string `db:"video_id"`
 	VideoTitle string `db:"video_title"`
-	Timestamp string `db:"timestamp"`
+	Timestamp  string `db:"timestamp"`
 }
 
 type MetalDatabase struct {

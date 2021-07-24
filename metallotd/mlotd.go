@@ -8,8 +8,8 @@ import (
 )
 
 type MetalLinkOfTheDay struct {
-	URL string
-	VideoID string
+	URL        string
+	VideoID    string
 	VideoTitle string
 }
 
