@@ -1,0 +1,130 @@
+PostgreSQL table info:
+
+CREATE TABLE "metal_links" (
+  "id" SERIAL PRIMARY KEY,
+  "video_id" varchar,
+  "video_title" varchar,
+  "url" varchar
+);
+
+CREATE INDEX ON "metal_links" ("video_title");
+
+
+
+
+sudo docker run -dit -p 5432:5432 -v /Users/abtiwary/Development/DockerVolumes/postgresdb:/var/lib/postgresql/data -e POSTGRES_USERNAME=postgres -e POSTGRES_PASSWORD=postgres 293e4ed402ba
+515b3b646f5fa090c886dd8bcc18483f8829d3586a9b3e23d4656f1795db4a93
+
+sudo docker ps                                                     ✔
+CONTAINER ID   IMAGE          COMMAND                  CREATED         STATUS         PORTS                                       NAMES
+515b3b646f5f   293e4ed402ba   "docker-entrypoint.s…"   6 seconds ago   Up 4 seconds   0.0.0.0:5432->5432/tcp, :::5432->5432/tcp   beautiful_clarke
+
+
+psql -h localhost -p 5432 -U postgres
+
+
+postgres=# \l
+                                   List of databases
+     Name      |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+---------------+----------+----------+------------+------------+-----------------------
+ gogetpodcasts | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ postgres      | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+               |          |          |            |            | postgres=CTc/postgres
+ template1     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+               |          |          |            |            | postgres=CTc/postgres
+(4 rows)
+
+postgres=# CREATE database MLOTD;
+CREATE DATABASE
+postgres=# \l
+                                   List of databases
+     Name      |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+---------------+----------+----------+------------+------------+-----------------------
+ gogetpodcasts | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ mlotd         | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ postgres      | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+               |          |          |            |            | postgres=CTc/postgres
+ template1     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+               |          |          |            |            | postgres=CTc/postgres
+(5 rows)
+
+
+
+
+ ~/Development/Golang/GoMlotd  migrate create -ext sql -dir migrations -seq add_links_table                       ✔
+/Users/abtiwary/Development/Golang/GoMlotd/migrations/000001_add_links_table.up.sql
+/Users/abtiwary/Development/Golang/GoMlotd/migrations/000001_add_links_table.down.sql
+
+
+ ~/Development/Golang/GoMlotd  migrate -database 'postgres://postgres:postgres@localhost:5432/mlotd?sslmode=disable' -path migrations up
+1/u add_links_table (75.334082ms)
+
+
+ ~/Development/Golang/GoMlotd  psql -h localhost -p 5432 -U postgres                                              ✔
+Password for user postgres:
+psql (13.3)
+Type "help" for help.
+
+postgres=# \l
+                                   List of databases
+     Name      |  Owner   | Encoding |  Collate   |   Ctype    |   Access privileges
+---------------+----------+----------+------------+------------+-----------------------
+ gogetpodcasts | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ mlotd         | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ postgres      | postgres | UTF8     | en_US.utf8 | en_US.utf8 |
+ template0     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+               |          |          |            |            | postgres=CTc/postgres
+ template1     | postgres | UTF8     | en_US.utf8 | en_US.utf8 | =c/postgres          +
+               |          |          |            |            | postgres=CTc/postgres
+(5 rows)
+
+postgres=# \c mlotd
+You are now connected to database "mlotd" as user "postgres".
+mlotd=# \d
+                 List of relations
+ Schema |        Name        |   Type   |  Owner
+--------+--------------------+----------+----------
+ public | metal_links        | table    | postgres
+ public | metal_links_id_seq | sequence | postgres
+ public | schema_migrations  | table    | postgres
+(3 rows)
+
+mlotd=# \q
+
+ ~/Development/Golang/GoMlotd 
+
+
+ ~/Development/Golang/GoMlotd  psql -h localhost -p 5432 -U postgres                                            2 ✘
+Password for user postgres:
+psql (13.3)
+Type "help" for help.
+
+postgres=# \c mlotd
+You are now connected to database "mlotd" as user "postgres".
+mlotd=# \dt
+               List of relations
+ Schema |       Name        | Type  |  Owner
+--------+-------------------+-------+----------
+ public | metal_links       | table | postgres
+ public | schema_migrations | table | postgres
+(2 rows)
+
+mlotd=# \d metal_links
+                                    Table "public.metal_links"
+   Column    |       Type        | Collation | Nullable |                 Default
+-------------+-------------------+-----------+----------+-----------------------------------------
+ id          | integer           |           | not null | nextval('metal_links_id_seq'::regclass)
+ video_id    | character varying |           |          |
+ video_title | character varying |           |          |
+ url         | character varying |           |          |
+ timestamp   | character varying |           |          |
+Indexes:
+    "metal_links_pkey" PRIMARY KEY, btree (id)
+    "metal_links_video_title_idx" btree (video_title)
+
+mlotd=#
+
+
+
