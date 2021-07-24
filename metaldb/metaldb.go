@@ -11,10 +11,11 @@ import (
 )
 
 type MetalRecommendation struct {
-	URL        string `db:"url"`
-	VideoID    string `db:"video_id"`
-	VideoTitle string `db:"video_title"`
-	Timestamp  string `db:"timestamp"`
+	ID         int    `json:"id" db:"id"`
+	URL        string `json:"url" db:"url"`
+	VideoID    string `json:"video_id" db:"video_id"`
+	VideoTitle string `json:"video_title" db:"video_title"`
+	Timestamp  string `json:"timestamp" db:"timestamp"`
 }
 
 type MetalDatabase struct {
