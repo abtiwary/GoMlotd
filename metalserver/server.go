@@ -82,14 +82,21 @@ func (s *Server) HandleSetRecommendation(w http.ResponseWriter, r *http.Request)
 	err := decoder.Decode(&rec)
 	if err != nil {
 		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 
 	fmt.Printf("Got video: %v\n", rec.Video)
+	if rec.Video == "" {
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
 
 	metalLoTD := mlotd.NewMetalLinkOfTheDay(rec.Video)
 	err = metalLoTD.GetDetails()
 	if err != nil {
 		log.WithError(err).Info("could not get video details")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
 	}
 	log.WithField("title", metalLoTD.VideoTitle).Debug("title of video")
 
