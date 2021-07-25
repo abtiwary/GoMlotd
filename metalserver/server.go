@@ -35,6 +35,7 @@ func NewServer(ip string, port int, db *metaldb.MetalDatabase) (*Server, error) 
 
 func (s *Server) initAPI() {
 	s.Router.Get("/api/v1/recommendations", s.HandleGetRecommendations)
+	s.Router.Post("/api/v1/recommendation", s.HandleSetRecommendation)
 }
 
 func (s *Server) StartHTTPServer() *http.Server {
@@ -60,4 +61,21 @@ func (s *Server) HandleGetRecommendations(w http.ResponseWriter, r *http.Request
 
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(mrs)
+}
+
+func (s *Server) HandleSetRecommendation(w http.ResponseWriter, r *http.Request) {
+	decoder := json.NewDecoder(r.Body)
+
+	rec := struct {
+		Video string `json:"video"`
+	}{}
+	err := decoder.Decode(&rec)
+	if err != nil {
+		w.WriteHeader(http.StatusInternalServerError)
+	}
+
+	fmt.Printf("Got video: %v\n", rec.Video)
+	fmt.Println("")
+
+
 }
