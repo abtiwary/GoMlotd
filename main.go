@@ -23,34 +23,35 @@ func main() {
 	if err != nil {
 		panic("error creating a database connection")
 	}
+	defer mlotdDB.DB.Close()
 
 	/*
-	metalLoTD := mlotd.NewMetalLinkOfTheDay("https://www.youtube.com/watch?v=kdGlZAWWghY&t=134s")
-	err = metalLoTD.GetDetails()
-	if err != nil {
-		log.WithError(err).Info("could not get video details")
-	}
+		metalLoTD := mlotd.NewMetalLinkOfTheDay("https://www.youtube.com/watch?v=kdGlZAWWghY&t=134s")
+		err = metalLoTD.GetDetails()
+		if err != nil {
+			log.WithError(err).Info("could not get video details")
+		}
 	*/
 
 	//log.WithField("title", metalLoTD.VideoTitle).Debug("title of video")
 
 	/*
-	mr := metaldb.MetalRecommendation{}
-	mr.URL = metalLoTD.URL
-	mr.VideoID = metalLoTD.VideoID
-	mr.VideoTitle = metalLoTD.VideoTitle
+		mr := metaldb.MetalRecommendation{}
+		mr.URL = metalLoTD.URL
+		mr.VideoID = metalLoTD.VideoID
+		mr.VideoTitle = metalLoTD.VideoTitle
 
-	err = mlotdDB.StoreRecommendation(&mr)
-	if err != nil {
-		log.WithError(err).Info("error writing metal recommendation to the database")
-	}
+		err = mlotdDB.StoreRecommendation(&mr)
+		if err != nil {
+			log.WithError(err).Info("error writing metal recommendation to the database")
+		}
 	*/
 
 	/*
-	mrs, err := mlotdDB.GetRecommendations()
-	for _, mr := range mrs {
-		fmt.Println(mr)
-	}
+		mrs, err := mlotdDB.GetRecommendations()
+		for _, mr := range mrs {
+			fmt.Println(mr)
+		}
 	*/
 
 	mServer, err := metalserver.NewServer(
@@ -59,9 +60,7 @@ func main() {
 		mlotdDB,
 	)
 
+	// Run the server
 	mServer.StartHTTPServer()
-
-
-	// ...
 
 }

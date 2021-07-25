@@ -15,6 +15,7 @@ type Server struct {
 	Router  *chi.Mux
 	IP      string
 	Port    int
+	Srv     *http.Server
 	MetalDB *metaldb.MetalDatabase
 }
 
@@ -47,6 +48,7 @@ func (s *Server) StartHTTPServer() *http.Server {
 		fmt.Println("ListenAndServe(): %v", err)
 	}
 
+	s.Srv = srv
 	return srv
 }
 
