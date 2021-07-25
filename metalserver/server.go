@@ -6,9 +6,11 @@ import (
 	"net/http"
 
 	"github.com/abtiwary/gomlotd/metaldb"
+	mlotd "github.com/abtiwary/gomlotd/metallotd"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	log "github.com/sirupsen/logrus"
 )
 
 type Server struct {
@@ -61,7 +63,14 @@ func (s *Server) HandleGetRecommendations(w http.ResponseWriter, r *http.Request
 
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(mrs)
+
+	if len(mrs) == 0 || mrs == nil {
+		emptyMrs := make([]string, 0)
+		json.NewEncoder(w).Encode(emptyMrs)
+	} else {
+		json.NewEncoder(w).Encode(mrs)
+	}
+
 }
 
 func (s *Server) HandleSetRecommendation(w http.ResponseWriter, r *http.Request) {
@@ -76,7 +85,22 @@ func (s *Server) HandleSetRecommendation(w http.ResponseWriter, r *http.Request)
 	}
 
 	fmt.Printf("Got video: %v\n", rec.Video)
-	fmt.Println("")
 
+	metalLoTD := mlotd.NewMetalLinkOfTheDay(rec.Video)
+	err = metalLoTD.GetDetails()
+	if err != nil {
+		log.WithError(err).Info("could not get video details")
+	}
+	log.WithField("title", metalLoTD.VideoTitle).Debug("title of video")
+
+	mr := metaldb.MetalRecommendation{}
+	mr.URL = metalLoTD.URL
+	mr.VideoID = metalLoTD.VideoID
+	mr.VideoTitle = metalLoTD.VideoTitle
+
+	err = s.MetalDB.StoreRecommendation(&mr)
+	if err != nil {
+		log.WithError(err).Info("error writing metal recommendation to the database")
+	}
 
 }

@@ -1,6 +1,6 @@
 CREATE TABLE "metal_links" (
   "id" SERIAL PRIMARY KEY,
-  "video_id" varchar,
+  "video_id" varchar UNIQUE,
   "video_title" varchar,
   "url" varchar,
   "timestamp" varchar

@@ -8,8 +8,6 @@ class Recommendations extends React.Component {
     }
 
     componentDidMount() {
-        alert("fetch here");
-
         fetch('http://localhost:8088/api/v1/recommendations')
             .then(res => res.json())
             .then(
@@ -28,7 +26,7 @@ class Recommendations extends React.Component {
             <div>
                 <ul>
                     {this.state.recommendations.map(item => (
-                        <li key={item.id}>{item.video_title} : {item.url}</li>
+                        <li key={item.id}>{item.video_title} : <a href={item.url} target={"_blank"}>{item.url}</a></li>
                     ))}
                 </ul>
             </div>
