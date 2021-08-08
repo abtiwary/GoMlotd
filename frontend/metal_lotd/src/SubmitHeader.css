@@ -5,3 +5,48 @@
 .sub-wrapper fieldset {
     margin: 20px 0;
 }
+
+.header_container {
+    background-color: black;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    position: absolute;
+    left: 0px;
+    top: 0px;
+    margin: auto;
+    max-height: 115px;
+    min-height: 140px;
+}
+
+.header_container .centerMe {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    color: white;
+}
+
+.header_container .sitelogo {
+    display: flex;
+    flex-direction: column;
+    justify-content: top;
+    align-items: top;
+}
+
+.submitText {
+    width: 130px;
+}
+
+
+.submit_button {
+    max-height: 25px;
+}
+
+.sitelogo {
+    padding: 10px;
+}
+
+

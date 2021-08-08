@@ -1,5 +1,6 @@
 import React from "react";
 import './SubmitHeader.css';
+import mlotdLogo from './mlotd.png';
 
 class SubmitHeader extends React.Component {
     constructor(props) {
@@ -27,13 +28,18 @@ class SubmitHeader extends React.Component {
     render() {
         return (
             <div className="sub-wrapper">
-                <form onSubmit={this.handleSubmit}>
+                <div className="header_container">
+                    <div className="sitelogo"><img src={mlotdLogo} width="125px" height="125px"></img></div>
+                    <div className="centerMe">
+                    <form onSubmit={this.handleSubmit}>
                     <label>
-                        Video:
-                        <input type="text" value={this.state.value} name="video" onChange={this.handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                </form>
+                    Submit a link: &nbsp;
+                    <input className="submitText" type="text" value={this.state.value} name="video" onChange={this.handleChange} />
+                    </label> &nbsp;
+                    <input className="submit_button" type="submit" value="Submit" />
+                    </form>
+                    </div>
+                </div>
             </div>
         );
     }

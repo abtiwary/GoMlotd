@@ -12,6 +12,7 @@ class Recommendations extends React.Component {
             .then(res => res.json())
             .then(
                 (result) => {
+                    console.log(result);
                     this.setState({
                         recommendations: result
                     });
@@ -23,10 +24,10 @@ class Recommendations extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className="recommendationsList">
                 <ul>
                     {this.state.recommendations.map(item => (
-                        <li key={item.id}>{item.video_title} : <a href={item.url} target={"_blank"}>{item.url}</a></li>
+                        <li className="listItem" key={item.id}><a href={item.url} target={"_blank"}>{item.video_title}</a></li>
                     ))}
                 </ul>
             </div>

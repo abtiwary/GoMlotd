@@ -5,3 +5,22 @@
 .rec-wrapper fieldset {
     margin: 20px 0;
 }
+
+.recommendationsList {
+    color: white;
+    position: absolute;
+    left: 0px;
+    top: 135px;
+}
+
+.recommendationsList a {
+    text-decoration: none;
+}
+
+.recommendationsList a:visited {
+    color: white;
+}
+
+.recommendationsList a:hover {
+    color: red;
+}
