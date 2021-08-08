@@ -121,4 +121,7 @@ func (s *Server) HandleSetRecommendation(w http.ResponseWriter, r *http.Request)
 		log.WithError(err).Info("error writing metal recommendation to the database")
 	}
 
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.WriteHeader(200)
+
 }

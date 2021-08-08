@@ -68,7 +68,7 @@ func (db *MetalDatabase) StoreRecommendation(mr *MetalRecommendation) error {
 }
 
 func (db *MetalDatabase) GetRecommendations() ([]MetalRecommendation, error) {
-	query := (`SELECT * FROM metal_links ORDER BY id`)
+	query := (`SELECT * FROM metal_links ORDER BY id DESC`)
 
 	rows, err := db.DB.Queryx(query)
 	if err != nil {
