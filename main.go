@@ -31,7 +31,7 @@ func main() {
 	defer mlotdDB.DB.Close()
 
 	mServer, err := metalserver.NewServer(
-		"localhost",
+		"0.0.0.0",
 		8666,
 		mlotdDB,
 	)

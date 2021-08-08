@@ -16,7 +16,12 @@ const App = () => {
 
   useEffect(() => {
     console.log("useeffect triggered");
-    fetch('http://localhost:8088/api/v1/recommendations')
+    fetch('http://14.203.254.111:8666/api/v1/recommendations', {
+      crossDomain: true,
+      method: 'GET',
+      mode: 'cors',
+      headers: {},
+    })
       .then(res => res.json())
       .then(
         (result) => {

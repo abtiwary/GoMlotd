@@ -8,8 +8,10 @@ const SubmitHeader = (props) => {
     let refresher = props.refresher;
 
     const handleSubmit = (event) => {
-        fetch('http://localhost:8088/api/v1/recommendation', {
+        fetch('http://14.203.254.111:8666/api/v1/recommendation', {
             method: 'POST',
+            mode: 'cors',
+            headers: {},
             // We convert the React state to JSON and send it as the POST body
             body: JSON.stringify(submitState)
         }).then(function(response) {
