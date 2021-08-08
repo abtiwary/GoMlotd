@@ -19,6 +19,7 @@ type Server struct {
 	Port    int
 	Srv     *http.Server
 	MetalDB *metaldb.MetalDatabase
+	Exit    chan struct{}
 }
 
 func NewServer(ip string, port int, db *metaldb.MetalDatabase) (*Server, error) {
@@ -31,6 +32,7 @@ func NewServer(ip string, port int, db *metaldb.MetalDatabase) (*Server, error) 
 	nMlotdServer.Router = r
 
 	nMlotdServer.MetalDB = db
+	nMlotdServer.Exit = make(chan struct{})
 
 	return nMlotdServer, nil
 }
@@ -47,12 +49,21 @@ func (s *Server) StartHTTPServer() *http.Server {
 		Addr:    fmt.Sprintf("%v:%v", s.IP, s.Port),
 		Handler: s.Router,
 	}
-	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
-		fmt.Println("ListenAndServe(): %v", err)
-	}
+
+	go func(exitChan chan struct{}) {
+		if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+			fmt.Println("ListenAndServe(): %v", err)
+		}
+	}(s.Exit)
 
 	s.Srv = srv
 	return srv
+}
+
+func (s *Server) StopHTTPServer() {
+	log.Debug("stopping HTTP server")
+	defer s.Srv.Close()
+	close(s.Exit)
 }
 
 func (s *Server) HandleGetRecommendations(w http.ResponseWriter, r *http.Request) {

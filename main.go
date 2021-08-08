@@ -2,6 +2,8 @@ package main
 
 import (
 	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/abtiwary/gomlotd/metaldb"
 	"github.com/abtiwary/gomlotd/metalserver"
@@ -12,6 +14,9 @@ func main() {
 	log.SetFormatter(&log.JSONFormatter{})
 	log.SetOutput(os.Stdout)
 	log.SetLevel(log.DebugLevel)
+
+	endCh := make(chan os.Signal, 1)
+	signal.Notify(endCh, syscall.SIGTERM, syscall.SIGKILL, syscall.SIGINT)
 
 	mlotdDB, err := metaldb.NewMetalDatabase(
 		"localhost",
@@ -30,7 +35,16 @@ func main() {
 		8088,
 		mlotdDB,
 	)
+	defer mServer.StopHTTPServer()
 
 	// Run the server
 	mServer.StartHTTPServer()
+
+	for {
+		select {
+		case <-endCh:
+			log.Debug("terminating...")
+			os.Exit(-1)
+		}
+	}
 }
