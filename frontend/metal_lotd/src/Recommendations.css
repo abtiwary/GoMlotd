@@ -7,10 +7,14 @@
 }
 
 .recommendationsList {
+    display: flex;
+    flex-direction: column;
     color: white;
     position: absolute;
-    left: 0px;
-    top: 135px;
+    left: 10px;
+    top: 140px;
+    padding: 8px;
+    gap: 8px;
 }
 
 .recommendationsList a {
@@ -23,4 +27,9 @@
 
 .recommendationsList a:hover {
     color: red;
+}
+
+.recommendationsList .metalItem {
+    width: 500px;
+    padding: 8px;
 }

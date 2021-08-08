@@ -25,11 +25,9 @@ class Recommendations extends React.Component {
     render() {
         return (
             <div className="recommendationsList">
-                <ul>
-                    {this.state.recommendations.map(item => (
-                        <li className="listItem" key={item.id}><a href={item.url} target={"_blank"}>{item.video_title}</a></li>
-                    ))}
-                </ul>
+                {this.state.recommendations.map(item => (
+                        <div className="metalItem" key={item.id}><a href={item.url} target={"_blank"}>{item.video_title}</a></div>
+                ))}
             </div>
         );
     }
