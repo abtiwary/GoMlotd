@@ -32,7 +32,7 @@ func main() {
 
 	mServer, err := metalserver.NewServer(
 		"localhost",
-		8088,
+		8666,
 		mlotdDB,
 	)
 	defer mServer.StopHTTPServer()
