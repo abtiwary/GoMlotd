@@ -18,10 +18,15 @@
 }
 
 .recommendationsList a {
+    color: white;
     text-decoration: none;
 }
 
 .recommendationsList a:visited {
+    color: white;
+}
+
+.recommendationsList a:active {
     color: white;
 }
 

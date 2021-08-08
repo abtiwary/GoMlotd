@@ -8,9 +8,10 @@ import Recommendations from "./Recommendations";
 const App = () => {
   const [metalLinks, setMetalLinks] = useState(null);
 
-  const forceUpdate = (stateupdater) => {
-    return () => stateupdater([]);
-
+  const forceUpdate = () => {
+    setMetalLinks([]);
+    window.location.reload();
+    return;
   };
 
   useEffect(() => {
@@ -29,7 +30,7 @@ const App = () => {
 
   return (
     <div>
-      <SubmitHeader action={forceUpdate} stateupdater={setMetalLinks} />
+      <SubmitHeader refresher={forceUpdate} />
       { metalLinks && <Recommendations links={metalLinks} />}
     </div>
   );

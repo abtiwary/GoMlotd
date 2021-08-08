@@ -5,8 +5,7 @@ import mlotdLogo from './mlotd.png';
 const SubmitHeader = (props) => {
     const [submitState, setSubmitState] = useState({video: ''});
 
-    let actionFn = props.action;
-    let stateUpdater = props.stateupdater;
+    let refresher = props.refresher;
 
     const handleSubmit = (event) => {
         fetch('http://localhost:8088/api/v1/recommendation', {
@@ -14,8 +13,8 @@ const SubmitHeader = (props) => {
             // We convert the React state to JSON and send it as the POST body
             body: JSON.stringify(submitState)
         }).then(function(response) {
-            console.log(response)
-            actionFn(stateUpdater);
+            console.log(response);
+            refresher();
             return response.text();
         });
 
